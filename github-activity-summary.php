@@ -47,10 +47,14 @@ function gas_group_activity($events)
             $repo = str_replace(
                 array(
                     'eventsmart.com-website',
-                    'eea-'
+                    'eea-',
+                    'event-espresso-core',
+                    '-gateway'
                 ),
                 array(
                     'es',
+                    '',
+                    'core',
                     ''
                 ),
                 $repo
@@ -66,6 +70,16 @@ function gas_group_activity($events)
 function gas_print_activity_summary($issues_by_date, $username)
 {
     ?>
+    <style>
+        .unselectable {
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+    </style>
     <h1><?php printf(esc_html__('Activity Summary for %1$s', 'event_espresso'), $username); ?></h1>
     <table>
         <thead>
@@ -77,7 +91,7 @@ function gas_print_activity_summary($issues_by_date, $username)
         <tbody>
         <?php foreach ($issues_by_date as $date => $repos) { ?>
             <tr>
-                <td><?php echo $date; ?></td>
+                <td class="unselectable"><?php echo $date; ?></td>
                 <td>
                     <?php foreach ($repos as $repo => $issues) {
                         echo $repo . ': ' . implode(', ', $issues) . ', ';
