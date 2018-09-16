@@ -21,7 +21,6 @@ function gas_shortcode( $atts ) {
     $issues_by_date = gas_group_activity($events);
     $issues_by_date = array_reverse($issues_by_date,true);
     gas_print_activity_summary($issues_by_date, $atts['username']);
-    var_dump($issues_by_date);
 }
 
 function gas_group_activity($events) {
@@ -29,15 +28,16 @@ function gas_group_activity($events) {
     foreach( $events as $event) {
         $item = null;
         $repo = '';
-        if( $event->payload->issue){
+        if( isset($event->payload->issue)) {
             $item = $event->payload->issue;
         }
-        if( $event->payload->pull_request) {
+        if( isset($event->payload->pull_request)) {
             $item = $event->payload->pull_request;
         }
 
         if( $item ){
-            $repo = str_replace('https://api.github.com/repos/', '', $item->repository_url);
+            $url = isset($item->repository_url) ? $item->repository_url : '';
+            $repo = str_replace('https://api.github.com/repos/', '', $url);
             if( empty($repo) && isset($item->head, $item->head->repo)){
                 $repo = $item->head->repo->full_name;
             }
